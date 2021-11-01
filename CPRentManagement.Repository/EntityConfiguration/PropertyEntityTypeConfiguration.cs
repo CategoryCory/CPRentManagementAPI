@@ -11,16 +11,21 @@ namespace CPRentManagement.Repository.EntityConfiguration
             builder.Property(x => x.Description)
                 .HasMaxLength(250);
             builder.Property(x => x.AddrLine1)
+                .IsRequired()
                 .HasMaxLength(50);
             builder.Property(x => x.AddrLine2)
                 .HasMaxLength(50);
             builder.Property(x => x.City)
-                 .HasMaxLength(25);
+                .IsRequired()
+                .HasMaxLength(25);
             builder.Property(x => x.State)
-                 .HasMaxLength(25);
+                .IsRequired()
+                .HasMaxLength(25);
             builder.Property(x => x.ZipCode)
-                 .HasMaxLength(15);
+                .IsRequired()
+                .HasMaxLength(15);
             builder.Property(x => x.PropertyType)
+                .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(25);
             builder.HasIndex(x => x.IsActive);

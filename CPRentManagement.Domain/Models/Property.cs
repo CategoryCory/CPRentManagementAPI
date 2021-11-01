@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CPRentManagement.Domain.Models
 {
@@ -23,8 +24,11 @@ namespace CPRentManagement.Domain.Models
         public string State { get; set; }
         public string ZipCode { get; set; }
         public PropertyType PropertyType { get; set; }
+        public double SquareFeet { get; set; }
         public int Taxes { get; set; }
         public int Insurance { get; set; }
+
+        public List<Unit> Units { get; set; }
 
         public int CompanyId { get; set; }
         public Company Company { get; set; }

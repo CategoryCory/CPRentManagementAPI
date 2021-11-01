@@ -8,7 +8,13 @@ namespace CPRentManagement.Repository.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Unit> builder)
         {
-            throw new System.NotImplementedException();
+            builder.Property(u => u.AddrLine1)
+                .IsRequired()
+                .HasMaxLength(75);
+            builder.Ignore(u => u.PercentageOccupied);
+            builder.HasIndex(u => u.IsActive);
+            builder.HasIndex(u => u.UnitStatus);
+            builder.HasOne(u => u.Property).WithMany(p => p.Units);
         }
     }
 }
