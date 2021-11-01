@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CPRentManagement.API.Models
+namespace CPRentManagement.Domain.Models
 {
     public class Company
     {

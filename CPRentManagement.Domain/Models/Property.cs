@@ -1,17 +1,17 @@
 ﻿using System;
 
-namespace CPRentManagement.API.Models
+namespace CPRentManagement.Domain.Models
 {
+    public enum PropertyType
+    {
+        Commercial,
+        Residential,
+        Billboard,
+        Tower
+    }
+
     public class Property
     {
-        public enum PropertyType
-        {
-            Commercial,
-            Residential,
-            Billboard,
-            Tower
-        }
-
         public int PropertyId { get; set; }
         public bool IsActive { get; set; }
         public DateTime DateBuilt { get; set; }
@@ -22,7 +22,7 @@ namespace CPRentManagement.API.Models
         public string City { get; set; }
         public string State { get; set; }
         public string ZipCode { get; set; }
-        public PropertyType Type { get; set; }
+        public PropertyType PropertyType { get; set; }
         public int Taxes { get; set; }
         public int Insurance { get; set; }
 

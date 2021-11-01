@@ -1,8 +1,8 @@
-﻿using CPRentManagement.API.Models;
+﻿using CPRentManagement.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CPRentManagement.API.DataAccess.EntityConfiguration
+namespace CPRentManagement.Repository.EntityConfiguration
 {
     public class CompanyEntityTypeConfiguration : IEntityTypeConfiguration<Company>
     {
@@ -12,7 +12,7 @@ namespace CPRentManagement.API.DataAccess.EntityConfiguration
                 .IsRequired()
                 .HasMaxLength(100);
             builder.Property(x => x.AddrLine1)
-                .HasMaxLength(50); 
+                .HasMaxLength(50);
             builder.Property(x => x.AddrLine2)
                  .HasMaxLength(50);
             builder.Property(x => x.City)

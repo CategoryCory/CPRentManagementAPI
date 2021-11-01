@@ -1,8 +1,8 @@
-﻿using CPRentManagement.API.Models;
+﻿using CPRentManagement.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace CPRentManagement.API.DataAccess.EntityConfiguration
+namespace CPRentManagement.Repository.EntityConfiguration
 {
     public class PropertyEntityTypeConfiguration : IEntityTypeConfiguration<Property>
     {
@@ -20,7 +20,7 @@ namespace CPRentManagement.API.DataAccess.EntityConfiguration
                  .HasMaxLength(25);
             builder.Property(x => x.ZipCode)
                  .HasMaxLength(15);
-            builder.Property(x => x.Type)
+            builder.Property(x => x.PropertyType)
                 .HasConversion<string>()
                 .HasMaxLength(25);
             builder.HasIndex(x => x.IsActive);

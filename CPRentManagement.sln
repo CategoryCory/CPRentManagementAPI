@@ -5,6 +5,10 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CPRentManagement.API", "CPRentManagement.API\CPRentManagement.API.csproj", "{D2AC50AC-0AA4-4C12-BDF1-2A9C7C1C827A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPRentManagement.Domain", "CPRentManagement.Domain\CPRentManagement.Domain.csproj", "{7E0D2BCF-1045-4BEE-A754-83301230ADC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CPRentManagement.Repository", "CPRentManagement.Repository\CPRentManagement.Repository.csproj", "{9A676D9C-CD32-44AE-B0B0-0A5F2C435619}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{D2AC50AC-0AA4-4C12-BDF1-2A9C7C1C827A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2AC50AC-0AA4-4C12-BDF1-2A9C7C1C827A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2AC50AC-0AA4-4C12-BDF1-2A9C7C1C827A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E0D2BCF-1045-4BEE-A754-83301230ADC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E0D2BCF-1045-4BEE-A754-83301230ADC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E0D2BCF-1045-4BEE-A754-83301230ADC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E0D2BCF-1045-4BEE-A754-83301230ADC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A676D9C-CD32-44AE-B0B0-0A5F2C435619}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A676D9C-CD32-44AE-B0B0-0A5F2C435619}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A676D9C-CD32-44AE-B0B0-0A5F2C435619}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A676D9C-CD32-44AE-B0B0-0A5F2C435619}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

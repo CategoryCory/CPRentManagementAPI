@@ -1,12 +1,12 @@
-﻿using CPRentManagement.API.DataAccess.EntityConfiguration;
-using CPRentManagement.API.Models;
+﻿using CPRentManagement.Domain.Models;
+using CPRentManagement.Repository.EntityConfiguration;
 using Microsoft.EntityFrameworkCore;
 
-namespace CPRentManagement.API.DataAccess
+namespace CPRentManagement.Repository
 {
-    public class ApplicationContext : DbContext
+    public class ApplicationDbContext : DbContext
     {
-        public ApplicationContext(DbContextOptions options)
+        public ApplicationDbContext(DbContextOptions options)
             :base(options)
         {
         }
@@ -18,5 +18,6 @@ namespace CPRentManagement.API.DataAccess
 
         public DbSet<Company> Companies { get; set; }
         public DbSet<Property> Properties { get; set; }
+        public DbSet<Unit> Units { get; set; }
     }
 }
