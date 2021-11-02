@@ -23,6 +23,7 @@ namespace CPRentManagement.API
         {
             services.ConfigureCors();
             services.ConfigureIISIntegration();
+            services.ConfigureApplicationDatabase(Configuration);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
