@@ -8,27 +8,27 @@ namespace CPRentManagement.Repository.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
-            builder.Property(x => x.CompanyName)
+            builder.Property(c => c.CompanyName)
                 .IsRequired()
                 .HasMaxLength(100);
-            builder.Property(x => x.AddrLine1)
+            builder.Property(c => c.AddrLine1)
                 .HasMaxLength(50);
-            builder.Property(x => x.AddrLine2)
+            builder.Property(c => c.AddrLine2)
                  .HasMaxLength(50);
-            builder.Property(x => x.City)
+            builder.Property(c => c.City)
                  .HasMaxLength(25);
-            builder.Property(x => x.State)
+            builder.Property(c => c.State)
                  .HasMaxLength(25);
-            builder.Property(x => x.ZipCode)
+            builder.Property(c => c.ZipCode)
                  .HasMaxLength(15);
-            builder.Property(x => x.Phone)
+            builder.Property(c => c.Phone)
                  .HasMaxLength(25);
-            builder.Property(x => x.AlternatePhone)
+            builder.Property(c => c.AlternatePhone)
                  .HasMaxLength(25);
-            builder.Property(x => x.Fax)
+            builder.Property(c => c.Fax)
                  .HasMaxLength(25);
-            builder.HasIndex(x => x.IsActive);
-            builder.HasIndex(x => x.CompanyName);
+            builder.HasIndex(c => c.IsActive);
+            builder.HasIndex(c => c.CompanyName);
         }
     }
 }

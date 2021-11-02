@@ -17,6 +17,8 @@
         public double PercentageOccupied { get; set; }
         public UnitStatus UnitStatus { get; set; }
 
+        public Tenant Tenant { get; set; }
+
         public int PropertyId { get; set; }
         public Property Property { get; set; }
     }

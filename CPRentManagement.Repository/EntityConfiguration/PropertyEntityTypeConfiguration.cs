@@ -8,27 +8,29 @@ namespace CPRentManagement.Repository.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Property> builder)
         {
-            builder.Property(x => x.Description)
+            builder.Property(p => p.DateBuilt)
+                .HasColumnType("date");
+            builder.Property(p => p.Description)
                 .HasMaxLength(250);
-            builder.Property(x => x.AddrLine1)
+            builder.Property(p => p.AddrLine1)
                 .IsRequired()
                 .HasMaxLength(50);
-            builder.Property(x => x.AddrLine2)
+            builder.Property(p => p.AddrLine2)
                 .HasMaxLength(50);
-            builder.Property(x => x.City)
+            builder.Property(p => p.City)
                 .IsRequired()
                 .HasMaxLength(25);
-            builder.Property(x => x.State)
+            builder.Property(p => p.State)
                 .IsRequired()
                 .HasMaxLength(25);
-            builder.Property(x => x.ZipCode)
+            builder.Property(p => p.ZipCode)
                 .IsRequired()
                 .HasMaxLength(15);
-            builder.Property(x => x.PropertyType)
+            builder.Property(p => p.PropertyType)
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(25);
-            builder.HasIndex(x => x.IsActive);
+            builder.HasIndex(p => p.IsActive);
             builder.HasOne(p => p.Company).WithMany(c => c.Properties);
         }
     }
