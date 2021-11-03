@@ -19,5 +19,9 @@ namespace CPRentManagement.Repository
         public DbSet<Company> Companies { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Unit> Units { get; set; }
+        public DbSet<Tenant> Tenants { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Charge> Charges { get; set; }
+        public DbSet<Payment> Payments { get; set; }
     }
 }

@@ -39,5 +39,6 @@ namespace CPRentManagement.Domain.Models
         public Unit Unit { get; set; }
 
         public ICollection<Charge> Charges { get; set; }
+        public ICollection<Payment> Payments { get; set; }
     }
 }
