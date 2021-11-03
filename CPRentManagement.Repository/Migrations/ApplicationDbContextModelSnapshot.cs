@@ -40,7 +40,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("Description");
 
-                    b.ToTable("Account");
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Charge", b =>
@@ -98,7 +98,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Charge");
+                    b.ToTable("Charges");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Company", b =>
@@ -207,7 +207,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Property", b =>
@@ -382,7 +382,7 @@ namespace CPRentManagement.Repository.Migrations
                     b.HasIndex("UnitId")
                         .IsUnique();
 
-                    b.ToTable("Tenant");
+                    b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Unit", b =>

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CPRentManagement.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211103202220_FixChargeActiveDefault")]
-    partial class FixChargeActiveDefault
+    [Migration("20211103230825_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,7 +42,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("Description");
 
-                    b.ToTable("Account");
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Charge", b =>
@@ -66,7 +66,7 @@ namespace CPRentManagement.Repository.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<DateTime>("ChargeDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<string>("ChargeStatus")
                         .IsRequired()
@@ -100,7 +100,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("TenantId");
 
-                    b.ToTable("Charge");
+                    b.ToTable("Charges");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Company", b =>
@@ -157,6 +157,59 @@ namespace CPRentManagement.Repository.Migrations
                     b.HasIndex("IsActive");
 
                     b.ToTable("Companies");
+                });
+
+            modelBuilder.Entity("CPRentManagement.Domain.Models.Payment", b =>
+                {
+                    b.Property<int>("PaymentId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AmountInCents")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<int>("BalanceInCents")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
+
+                    b.Property<bool?>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<string>("Memo")
+                        .HasMaxLength(75)
+                        .HasColumnType("nvarchar(75)");
+
+                    b.Property<DateTime>("PaymentDate")
+                        .HasColumnType("date");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Check");
+
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasDefaultValue("Payment");
+
+                    b.Property<int>("TenantId")
+                        .HasColumnType("int");
+
+                    b.HasKey("PaymentId");
+
+                    b.HasIndex("TenantId");
+
+                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Property", b =>
@@ -331,7 +384,7 @@ namespace CPRentManagement.Repository.Migrations
                     b.HasIndex("UnitId")
                         .IsUnique();
 
-                    b.ToTable("Tenant");
+                    b.ToTable("Tenants");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Unit", b =>
@@ -406,6 +459,17 @@ namespace CPRentManagement.Repository.Migrations
                     b.Navigation("Tenant");
                 });
 
+            modelBuilder.Entity("CPRentManagement.Domain.Models.Payment", b =>
+                {
+                    b.HasOne("CPRentManagement.Domain.Models.Tenant", "Tenant")
+                        .WithMany("Payments")
+                        .HasForeignKey("TenantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tenant");
+                });
+
             modelBuilder.Entity("CPRentManagement.Domain.Models.Property", b =>
                 {
                     b.HasOne("CPRentManagement.Domain.Models.Company", "Company")
@@ -462,6 +526,8 @@ namespace CPRentManagement.Repository.Migrations
             modelBuilder.Entity("CPRentManagement.Domain.Models.Tenant", b =>
                 {
                     b.Navigation("Charges");
+
+                    b.Navigation("Payments");
                 });
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Unit", b =>

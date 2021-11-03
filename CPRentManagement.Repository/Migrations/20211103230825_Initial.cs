@@ -3,10 +3,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CPRentManagement.Repository.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Accounts",
+                columns: table => new
+                {
+                    AccountId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
+                    Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Accounts", x => x.AccountId);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Companies",
                 columns: table => new
@@ -72,7 +86,7 @@ namespace CPRentManagement.Repository.Migrations
                     AddrLine2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RentInCents = table.Column<int>(type: "int", nullable: false),
                     SquareFeet = table.Column<double>(type: "float", nullable: false),
-                    UnitStatus = table.Column<int>(type: "int", nullable: false),
+                    UnitStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Unoccupied"),
                     PropertyId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -87,12 +101,12 @@ namespace CPRentManagement.Repository.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Tenant",
+                name: "Tenants",
                 columns: table => new
                 {
                     TenantId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenantStatus = table.Column<int>(type: "int", nullable: false),
+                    TenantStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Active"),
                     ContactPerson = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     WorkPhone = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
@@ -118,14 +132,114 @@ namespace CPRentManagement.Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Tenant", x => x.TenantId);
+                    table.PrimaryKey("PK_Tenants", x => x.TenantId);
                     table.ForeignKey(
-                        name: "FK_Tenant_Units_UnitId",
+                        name: "FK_Tenants_Units_UnitId",
                         column: x => x.UnitId,
                         principalTable: "Units",
                         principalColumn: "UnitId",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "Charges",
+                columns: table => new
+                {
+                    ChargeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ChargeStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Unpaid"),
+                    ChargeDate = table.Column<DateTime>(type: "date", nullable: false),
+                    AmountInCents = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    BalanceInCents = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    Memo = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: true),
+                    ParentChargeId = table.Column<int>(type: "int", nullable: false),
+                    AccountId = table.Column<int>(type: "int", nullable: false),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Charges", x => x.ChargeId);
+                    table.ForeignKey(
+                        name: "FK_Charges_Accounts_AccountId",
+                        column: x => x.AccountId,
+                        principalTable: "Accounts",
+                        principalColumn: "AccountId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Charges_Charges_ParentChargeId",
+                        column: x => x.ParentChargeId,
+                        principalTable: "Charges",
+                        principalColumn: "ChargeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Charges_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    PaymentId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
+                    PaymentType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Payment"),
+                    PaymentMethod = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Check"),
+                    PaymentDate = table.Column<DateTime>(type: "date", nullable: false),
+                    AmountInCents = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    BalanceInCents = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
+                    Memo = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: true),
+                    TenantId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.PaymentId);
+                    table.ForeignKey(
+                        name: "FK_Payments_Tenants_TenantId",
+                        column: x => x.TenantId,
+                        principalTable: "Tenants",
+                        principalColumn: "TenantId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Accounts_Description",
+                table: "Accounts",
+                column: "Description");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_AccountId",
+                table: "Charges",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_BalanceInCents",
+                table: "Charges",
+                column: "BalanceInCents");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_ChargeDate",
+                table: "Charges",
+                column: "ChargeDate");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_ChargeStatus",
+                table: "Charges",
+                column: "ChargeStatus");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_ParentChargeId",
+                table: "Charges",
+                column: "ParentChargeId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Charges_TenantId",
+                table: "Charges",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Companies_CompanyName",
@@ -138,6 +252,11 @@ namespace CPRentManagement.Repository.Migrations
                 column: "IsActive");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Payments_TenantId",
+                table: "Payments",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Properties_CompanyId",
                 table: "Properties",
                 column: "CompanyId");
@@ -148,13 +267,13 @@ namespace CPRentManagement.Repository.Migrations
                 column: "IsActive");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenant_TenantStatus",
-                table: "Tenant",
+                name: "IX_Tenants_TenantStatus",
+                table: "Tenants",
                 column: "TenantStatus");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenant_UnitId",
-                table: "Tenant",
+                name: "IX_Tenants_UnitId",
+                table: "Tenants",
                 column: "UnitId",
                 unique: true);
 
@@ -177,7 +296,16 @@ namespace CPRentManagement.Repository.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Tenant");
+                name: "Charges");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
+
+            migrationBuilder.DropTable(
+                name: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "Tenants");
 
             migrationBuilder.DropTable(
                 name: "Units");
