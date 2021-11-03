@@ -28,7 +28,7 @@ namespace CPRentManagement.Domain.Models
         public int Taxes { get; set; }
         public int Insurance { get; set; }
 
-        public List<Unit> Units { get; set; }
+        public ICollection<Unit> Units { get; set; }
 
         public int CompanyId { get; set; }
         public Company Company { get; set; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CPRentManagement.Domain.Models
 {
@@ -36,5 +37,7 @@ namespace CPRentManagement.Domain.Models
 
         public int UnitId { get; set; }
         public Unit Unit { get; set; }
+
+        public ICollection<Charge> Charges { get; set; }
     }
 }

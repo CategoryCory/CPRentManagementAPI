@@ -16,6 +16,6 @@ namespace CPRentManagement.Domain.Models
         public string AlternatePhone { get; set; }
         public string Fax { get; set; }
 
-        public List<Property> Properties { get; set; }
+        public ICollection<Property> Properties { get; set; }
     }
 }
