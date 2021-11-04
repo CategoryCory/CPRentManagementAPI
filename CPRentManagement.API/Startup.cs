@@ -1,4 +1,6 @@
 using CPRentManagement.API.Extensions;
+using CPRentManagement.Services;
+using CPRentManagement.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -30,6 +32,8 @@ namespace CPRentManagement.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CPRentManagement.API", Version = "v1" });
             });
+
+            services.AddScoped<ICompanyService, CompanyService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

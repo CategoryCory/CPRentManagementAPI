@@ -13,12 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\CPRentManagement.Domain\CPRentManagement.Domain.csproj" />
     <ProjectReference Include="..\CPRentManagement.Repository\CPRentManagement.Repository.csproj" />
+    <ProjectReference Include="..\CPRentManagement.Services\CPRentManagement.Services.csproj" />
   </ItemGroup>
 
 </Project>
