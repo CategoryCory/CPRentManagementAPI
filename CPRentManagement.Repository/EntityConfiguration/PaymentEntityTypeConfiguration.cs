@@ -8,8 +8,6 @@ namespace CPRentManagement.Repository.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Payment> builder)
         {
-            builder.Property(p => p.IsActive)
-                .HasDefaultValue(true);
             builder.Property(p => p.PaymentType)
                 .IsRequired()
                 .HasConversion<string>()

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CPRentManagement.Repository.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,7 +13,7 @@ namespace CPRentManagement.Repository.Migrations
                 {
                     AccountId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false)
                 },
                 constraints: table =>
@@ -27,7 +27,7 @@ namespace CPRentManagement.Repository.Migrations
                 {
                     CompanyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CompanyName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     AddrLine1 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     AddrLine2 = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
@@ -49,7 +49,7 @@ namespace CPRentManagement.Repository.Migrations
                 {
                     PropertyId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DateBuilt = table.Column<DateTime>(type: "date", nullable: false),
                     KeyNumber = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: true),
@@ -81,7 +81,7 @@ namespace CPRentManagement.Repository.Migrations
                 {
                     UnitId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     AddrLine1 = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: false),
                     AddrLine2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RentInCents = table.Column<int>(type: "int", nullable: false),
@@ -106,7 +106,7 @@ namespace CPRentManagement.Repository.Migrations
                 {
                     TenantId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TenantStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Active"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     ContactPerson = table.Column<string>(type: "nvarchar(75)", maxLength: 75, nullable: true),
                     Phone = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
                     WorkPhone = table.Column<string>(type: "nvarchar(25)", maxLength: 25, nullable: true),
@@ -147,6 +147,7 @@ namespace CPRentManagement.Repository.Migrations
                 {
                     ChargeId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     ChargeStatus = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Unpaid"),
                     ChargeDate = table.Column<DateTime>(type: "date", nullable: false),
                     AmountInCents = table.Column<int>(type: "int", nullable: false, defaultValue: 0),
@@ -185,7 +186,7 @@ namespace CPRentManagement.Repository.Migrations
                 {
                     PaymentId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    IsActive = table.Column<bool>(type: "bit", nullable: true, defaultValue: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     PaymentType = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Payment"),
                     PaymentMethod = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false, defaultValue: "Check"),
                     PaymentDate = table.Column<DateTime>(type: "date", nullable: false),
@@ -247,9 +248,9 @@ namespace CPRentManagement.Repository.Migrations
                 column: "CompanyName");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Companies_IsActive",
+                name: "IX_Companies_IsDeleted",
                 table: "Companies",
-                column: "IsActive");
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Payments_TenantId",
@@ -262,14 +263,14 @@ namespace CPRentManagement.Repository.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Properties_IsActive",
+                name: "IX_Properties_IsDeleted",
                 table: "Properties",
-                column: "IsActive");
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tenants_TenantStatus",
+                name: "IX_Tenants_IsDeleted",
                 table: "Tenants",
-                column: "TenantStatus");
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tenants_UnitId",
@@ -278,9 +279,9 @@ namespace CPRentManagement.Repository.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Units_IsActive",
+                name: "IX_Units_IsDeleted",
                 table: "Units",
-                column: "IsActive");
+                column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Units_PropertyId",

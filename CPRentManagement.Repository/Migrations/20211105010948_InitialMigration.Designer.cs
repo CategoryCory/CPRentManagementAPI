@@ -4,14 +4,16 @@ using CPRentManagement.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CPRentManagement.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211105010948_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,6 +37,8 @@ namespace CPRentManagement.Repository.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("AccountId");
+
+                    b.HasIndex("Description");
 
                     b.ToTable("Accounts");
                 });
@@ -69,6 +73,9 @@ namespace CPRentManagement.Repository.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("Unpaid");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Memo")
                         .HasMaxLength(75)
                         .HasColumnType("nvarchar(75)");
@@ -82,6 +89,12 @@ namespace CPRentManagement.Repository.Migrations
                     b.HasKey("ChargeId");
 
                     b.HasIndex("AccountId");
+
+                    b.HasIndex("BalanceInCents");
+
+                    b.HasIndex("ChargeDate");
+
+                    b.HasIndex("ChargeStatus");
 
                     b.HasIndex("ParentChargeId")
                         .IsUnique();
@@ -124,9 +137,7 @@ namespace CPRentManagement.Repository.Migrations
                         .HasColumnType("nvarchar(25)");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Phone")
                         .HasMaxLength(25)
@@ -141,6 +152,10 @@ namespace CPRentManagement.Repository.Migrations
                         .HasColumnType("nvarchar(15)");
 
                     b.HasKey("CompanyId");
+
+                    b.HasIndex("CompanyName");
+
+                    b.HasIndex("IsDeleted");
 
                     b.ToTable("Companies");
                 });
@@ -161,6 +176,9 @@ namespace CPRentManagement.Repository.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasDefaultValue(0);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Memo")
                         .HasMaxLength(75)
@@ -258,6 +276,8 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("CompanyId");
 
+                    b.HasIndex("IsDeleted");
+
                     b.ToTable("Properties");
                 });
 
@@ -354,7 +374,10 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasKey("TenantId");
 
-                    b.HasIndex("UnitId");
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("UnitId")
+                        .IsUnique();
 
                     b.ToTable("Tenants");
                 });
@@ -395,7 +418,11 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasKey("UnitId");
 
+                    b.HasIndex("IsDeleted");
+
                     b.HasIndex("PropertyId");
+
+                    b.HasIndex("UnitStatus");
 
                     b.ToTable("Units");
                 });
@@ -452,8 +479,8 @@ namespace CPRentManagement.Repository.Migrations
             modelBuilder.Entity("CPRentManagement.Domain.Models.Tenant", b =>
                 {
                     b.HasOne("CPRentManagement.Domain.Models.Unit", "Unit")
-                        .WithMany("Tenants")
-                        .HasForeignKey("UnitId")
+                        .WithOne("Tenant")
+                        .HasForeignKey("CPRentManagement.Domain.Models.Tenant", "UnitId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -500,7 +527,7 @@ namespace CPRentManagement.Repository.Migrations
 
             modelBuilder.Entity("CPRentManagement.Domain.Models.Unit", b =>
                 {
-                    b.Navigation("Tenants");
+                    b.Navigation("Tenant");
                 });
 #pragma warning restore 612, 618
         }

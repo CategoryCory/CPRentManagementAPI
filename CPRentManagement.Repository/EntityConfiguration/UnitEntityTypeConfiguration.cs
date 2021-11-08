@@ -16,13 +16,9 @@ namespace CPRentManagement.Repository.EntityConfiguration
                 .HasConversion<string>()
                 .HasDefaultValue(UnitStatus.Unoccupied);
             builder.Ignore(u => u.PercentageOccupied);
-            builder.HasIndex(u => u.IsActive);
-            builder.HasIndex(u => u.UnitStatus);
+
             builder.HasOne(u => u.Property)
                 .WithMany(p => p.Units);
-            builder.HasOne(u => u.Tenant)
-                .WithOne(t => t.Unit)
-                .HasForeignKey<Tenant>(t => t.UnitId);
         }
     }
 }

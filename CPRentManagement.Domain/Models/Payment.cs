@@ -20,7 +20,6 @@ namespace CPRentManagement.Domain.Models
     public class Payment
     {
         public int PaymentId { get; set; }
-        public bool? IsActive { get; set; }
         public PaymentType PaymentType { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public DateTime PaymentDate { get; set; }

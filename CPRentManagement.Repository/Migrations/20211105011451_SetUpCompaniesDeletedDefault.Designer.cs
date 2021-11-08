@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CPRentManagement.Repository.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20211103230825_Initial")]
-    partial class Initial
+    [Migration("20211105011451_SetUpCompaniesDeletedDefault")]
+    partial class SetUpCompaniesDeletedDefault
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,10 +33,8 @@ namespace CPRentManagement.Repository.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("AccountId");
 
@@ -74,6 +72,9 @@ namespace CPRentManagement.Repository.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
                         .HasDefaultValue("Unpaid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Memo")
                         .HasMaxLength(75)
@@ -135,8 +136,10 @@ namespace CPRentManagement.Repository.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.Property<string>("Phone")
                         .HasMaxLength(25)
@@ -154,7 +157,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("CompanyName");
 
-                    b.HasIndex("IsActive");
+                    b.HasIndex("IsDeleted");
 
                     b.ToTable("Companies");
                 });
@@ -176,10 +179,8 @@ namespace CPRentManagement.Repository.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(0);
 
-                    b.Property<bool?>("IsActive")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(true);
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Memo")
                         .HasMaxLength(75)
@@ -246,7 +247,7 @@ namespace CPRentManagement.Repository.Migrations
                     b.Property<int>("Insurance")
                         .HasColumnType("int");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("KeyNumber")
@@ -277,7 +278,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("IsActive");
+                    b.HasIndex("IsDeleted");
 
                     b.ToTable("Properties");
                 });
@@ -332,6 +333,9 @@ namespace CPRentManagement.Repository.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("LeaseBeginDate")
                         .HasColumnType("date");
 
@@ -359,13 +363,6 @@ namespace CPRentManagement.Repository.Migrations
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
 
-                    b.Property<string>("TenantStatus")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasDefaultValue("Active");
-
                     b.Property<int>("UnitId")
                         .HasColumnType("int");
 
@@ -379,7 +376,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasKey("TenantId");
 
-                    b.HasIndex("TenantStatus");
+                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("UnitId")
                         .IsUnique();
@@ -402,7 +399,7 @@ namespace CPRentManagement.Repository.Migrations
                     b.Property<string>("AddrLine2")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<int>("PropertyId")
@@ -423,7 +420,7 @@ namespace CPRentManagement.Repository.Migrations
 
                     b.HasKey("UnitId");
 
-                    b.HasIndex("IsActive");
+                    b.HasIndex("IsDeleted");
 
                     b.HasIndex("PropertyId");
 

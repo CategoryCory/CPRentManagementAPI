@@ -24,10 +24,6 @@ namespace CPRentManagement.Repository.EntityConfiguration
             builder.Property(c => c.Memo)
                 .HasMaxLength(75);
 
-            builder.HasIndex(c => c.ChargeStatus);
-            builder.HasIndex(c => c.ChargeDate);
-            builder.HasIndex(c => c.BalanceInCents);
-
             builder.HasOne(c => c.Account).WithMany(a => a.Charges);
             builder.HasOne(c => c.Tenant).WithMany(t => t.Charges);
             builder.HasOne(c => c.ParentCharge)

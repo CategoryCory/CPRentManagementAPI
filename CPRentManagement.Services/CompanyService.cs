@@ -1,9 +1,13 @@
 ﻿using CPRentManagement.Domain.Models;
 using CPRentManagement.Repository;
 using CPRentManagement.Services.Contracts;
+using CPRentManagement.Services.Validators;
+using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CPRentManagement.Services
@@ -11,60 +15,88 @@ namespace CPRentManagement.Services
     public class CompanyService : ICompanyService
     {
         private readonly ApplicationDbContext _context;
+        private readonly ILogger<CompanyService> _logger;
+        private readonly CompanyValidator _companyValidator;
 
-        public CompanyService(ApplicationDbContext context)
+        public CompanyService(ApplicationDbContext context, ILogger<CompanyService> logger)
         {
             _context = context;
+            _logger = logger;
+            _companyValidator = new CompanyValidator();
         }
 
-        public async Task<List<Company>> GetAllCompanies()
+        public async Task<List<Company>> GetAllCompanies(bool includeDeleted = false)
         {
-            var companies = await _context.Companies
-                .AsNoTracking()
-                .ToListAsync();
-            return companies;
+            var companies = _context.Companies.AsNoTracking();
+
+            if (includeDeleted)
+            {
+                companies = companies.IgnoreQueryFilters();
+            }
+
+            return await companies.ToListAsync();
         }
 
-        public async Task<Company> GetCompanyById(int id)
+        public async Task<Company> GetCompanyById(int id, bool includeDeleted = false)
         {
-            var company = await _context.Companies.FindAsync(id);
+            var company = includeDeleted
+                ? await _context.Companies.IgnoreQueryFilters().Where(c => c.CompanyId == id).FirstOrDefaultAsync()
+                : await _context.Companies.FindAsync(id);
             return company;
         }
 
-        public async Task CreateCompany(Company company)
+        public async Task<ApplicationResult> CreateCompany(Company company)
         {
+            ValidationResult result = _companyValidator.Validate(company);
+
+            if (!result.IsValid)
+            {
+                _logger.LogError("Failed to create new company");
+
+                return ApplicationResult.Failure(result.Errors.Select(e => e.ErrorMessage).ToList());
+            }
+
             _context.Companies.Add(company);
             await _context.SaveChangesAsync();
+
+            return ApplicationResult.Success();
         }
 
-        public async Task<bool> UpdateCompany(Company company)
+        public async Task<ApplicationResult> UpdateCompany(Company cmp)
         {
-            if (company is null || company.CompanyId <= 0)
+            if (await _context.Companies.AnyAsync(c => c.CompanyId == cmp.CompanyId) == false)
             {
-                return false;
+                return null;
             }
 
-            _context.Companies.Update(company);
+            ValidationResult result = _companyValidator.Validate(cmp);
+
+            if (!result.IsValid)
+            {
+                _logger.LogError($"Failed to update company {cmp.CompanyName}");
+
+                return ApplicationResult.Failure(result.Errors.Select(e => e.ErrorMessage).ToList());
+            }
+
+            _context.Companies.Update(cmp);
             await _context.SaveChangesAsync();
-            return true;
+
+            return ApplicationResult.Success();
         }
 
-        public async Task<bool> DeleteCompany(int id)
+        public async Task<ApplicationResult> DeleteCompany(int id)
         {
-            if (id <= 0)
-            {
-                return false;
-            }
-
             Company company = await _context.Companies.FindAsync(id);
-            if (company is not null)
+
+            if (company is null)
             {
-                company.IsActive = false;
-                await _context.SaveChangesAsync();
-                return true;
+                return null;
             }
 
-            return false;
+            company.IsDeleted = true;
+            await _context.SaveChangesAsync();
+
+            return ApplicationResult.Success();
         }
     }
 }

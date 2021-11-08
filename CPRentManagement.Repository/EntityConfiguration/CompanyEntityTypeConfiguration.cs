@@ -8,6 +8,8 @@ namespace CPRentManagement.Repository.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Company> builder)
         {
+            builder.Property(c => c.IsDeleted)
+                .HasDefaultValue(false);
             builder.Property(c => c.CompanyName)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -27,8 +29,8 @@ namespace CPRentManagement.Repository.EntityConfiguration
                  .HasMaxLength(25);
             builder.Property(c => c.Fax)
                  .HasMaxLength(25);
-            builder.HasIndex(c => c.IsActive);
-            builder.HasIndex(c => c.CompanyName);
+
+            builder.HasQueryFilter(c => c.IsDeleted != true);
         }
     }
 }

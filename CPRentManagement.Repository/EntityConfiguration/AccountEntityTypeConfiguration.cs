@@ -8,12 +8,9 @@ namespace CPRentManagement.Repository.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Account> builder)
         {
-            builder.Property(a => a.IsActive)
-                .HasDefaultValue(true);
             builder.Property(a => a.Description)
                 .IsRequired()
                 .HasMaxLength(50);
-            builder.HasIndex(a => a.Description);
         }
     }
 }

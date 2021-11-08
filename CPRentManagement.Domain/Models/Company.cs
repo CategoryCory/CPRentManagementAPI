@@ -5,7 +5,7 @@ namespace CPRentManagement.Domain.Models
     public class Company
     {
         public int CompanyId { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
         public string CompanyName { get; set; }
         public string AddrLine1 { get; set; }
         public string AddrLine2 { get; set; }

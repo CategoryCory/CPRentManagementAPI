@@ -38,16 +38,14 @@ namespace CPRentManagement.Repository.EntityConfiguration
                 .HasMaxLength(25);
             builder.Property(t => t.ZipCode)
                 .HasMaxLength(25);
-            builder.Property(t => t.TenantStatus)
-                .HasMaxLength(20)
-                .HasConversion<string>()
-                .HasDefaultValue(TenantStatus.Active);
             builder.Property(t => t.MoveInDate).HasColumnType("date");
             builder.Property(t => t.MoveOutDate).HasColumnType("date");
             builder.Property(t => t.LeaseBeginDate).HasColumnType("date");
             builder.Property(t => t.LeaseEndDate).HasColumnType("date");
             builder.Property(t => t.MoveInDate).HasColumnType("date");
-            builder.HasIndex(t => t.TenantStatus);
+
+            builder.HasOne(t => t.Unit)
+                .WithMany(u => u.Tenants);
         }
     }
 }

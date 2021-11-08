@@ -6,7 +6,6 @@ namespace CPRentManagement.Domain.Models
     {
         Paid,
         Unpaid,
-        Deleted
     }
 
     public class Charge

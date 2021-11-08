@@ -6,16 +6,6 @@ namespace CPRentManagement.Repository
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            :base(options)
-        {
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder) 
-        {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CompanyEntityTypeConfiguration).Assembly);
-        }
-
         public DbSet<Company> Companies { get; set; }
         public DbSet<Property> Properties { get; set; }
         public DbSet<Unit> Units { get; set; }
@@ -23,5 +13,15 @@ namespace CPRentManagement.Repository
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Charge> Charges { get; set; }
         public DbSet<Payment> Payments { get; set; }
+
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+            :base(options)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(CompanyEntityTypeConfiguration).Assembly);
+        }
     }
 }

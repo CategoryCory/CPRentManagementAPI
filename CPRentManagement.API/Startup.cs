@@ -1,4 +1,5 @@
 using CPRentManagement.API.Extensions;
+using CPRentManagement.API.Maps;
 using CPRentManagement.Services;
 using CPRentManagement.Services.Contracts;
 using Microsoft.AspNetCore.Builder;
@@ -32,6 +33,8 @@ namespace CPRentManagement.API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CPRentManagement.API", Version = "v1" });
             });
+
+            services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             services.AddScoped<ICompanyService, CompanyService>();
         }

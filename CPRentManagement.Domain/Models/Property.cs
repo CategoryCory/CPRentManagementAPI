@@ -14,7 +14,7 @@ namespace CPRentManagement.Domain.Models
     public class Property
     {
         public int PropertyId { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
         public DateTime DateBuilt { get; set; }
         public int KeyNumber { get; set; }
         public string Description { get; set; }

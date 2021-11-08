@@ -1,4 +1,6 @@
-﻿namespace CPRentManagement.Domain.Models
+﻿using System.Collections.Generic;
+
+namespace CPRentManagement.Domain.Models
 {
     public enum UnitStatus
     {
@@ -9,7 +11,7 @@
     public class Unit
     {
         public int UnitId { get; set; }
-        public bool IsActive { get; set; }
+        public bool IsDeleted { get; set; }
         public string AddrLine1 { get; set; }
         public string AddrLine2 { get; set; }
         public int RentInCents { get; set; }
@@ -17,7 +19,7 @@
         public double PercentageOccupied { get; set; }
         public UnitStatus UnitStatus { get; set; }
 
-        public Tenant Tenant { get; set; }
+        public ICollection<Tenant> Tenants { get; set; }
 
         public int PropertyId { get; set; }
         public Property Property { get; set; }

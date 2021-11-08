@@ -30,7 +30,7 @@ namespace CPRentManagement.Repository.EntityConfiguration
                 .IsRequired()
                 .HasConversion<string>()
                 .HasMaxLength(25);
-            builder.HasIndex(p => p.IsActive);
+
             builder.HasOne(p => p.Company).WithMany(c => c.Properties);
         }
     }
