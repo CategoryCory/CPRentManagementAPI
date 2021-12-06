@@ -5,7 +5,6 @@ using CPRentManagement.Services.Validators;
 using FluentValidation.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,6 +65,8 @@ namespace CPRentManagement.Services
         {
             if (await _context.Companies.AnyAsync(c => c.CompanyId == cmp.CompanyId) == false)
             {
+                _logger.LogError("The specified company {companyName} could not be found.", cmp.CompanyName);
+
                 return null;
             }
 
@@ -73,7 +74,7 @@ namespace CPRentManagement.Services
 
             if (!result.IsValid)
             {
-                _logger.LogError($"Failed to update company {cmp.CompanyName}");
+                _logger.LogError("Failed to update company {companyName}", cmp.CompanyName);
 
                 return ApplicationResult.Failure(result.Errors.Select(e => e.ErrorMessage).ToList());
             }
@@ -90,6 +91,8 @@ namespace CPRentManagement.Services
 
             if (company is null)
             {
+                _logger.LogError("The specified company could not be found.");
+
                 return null;
             }
 

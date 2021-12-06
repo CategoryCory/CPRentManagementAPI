@@ -36,7 +36,7 @@ namespace CPRentManagement.API.Controllers
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<List<Company>, List<CompanyDto>>(companies));
+            return Ok(_mapper.Map<List<CompanyDto>>(companies));
         }
 
         // GET api/<CompaniesController>/5
@@ -52,7 +52,7 @@ namespace CPRentManagement.API.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<Company, CompanyDto>(company));
+            return Ok(_mapper.Map<CompanyDto>(company));
         }
 
         // POST api/<CompaniesController>
@@ -61,7 +61,7 @@ namespace CPRentManagement.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> AddCompany([FromBody] CompanyDto companyDto)
         {
-            var companyToCreate = _mapper.Map<CompanyDto, Company>(companyDto);
+            var companyToCreate = _mapper.Map<Company>(companyDto);
 
             ApplicationResult result = await _companyService.CreateCompany(companyToCreate);
 
@@ -85,7 +85,7 @@ namespace CPRentManagement.API.Controllers
                 return BadRequest();
             }
 
-            var companyToEdit = _mapper.Map<CompanyDto, Company>(companyDto);
+            var companyToEdit = _mapper.Map<Company>(companyDto);
             companyToEdit.CompanyId = id;
 
             ApplicationResult result = await _companyService.UpdateCompany(companyToEdit);

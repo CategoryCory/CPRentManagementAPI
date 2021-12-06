@@ -4,6 +4,8 @@ namespace CPRentManagement.API.Dtos
 {
     public class CompanyDto
     {
+        public int CompanyId { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string CompanyName { get; set; }
