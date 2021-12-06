@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace CPRentManagement.API.Extensions
 {
-    public static class ServiceExtensions
+    public static class ApplicationServiceExtensions
     {
         public static void ConfigureCors(this IServiceCollection services)
         {

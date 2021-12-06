@@ -1,10 +1,12 @@
 ﻿using CPRentManagement.Domain.Models;
 using CPRentManagement.Repository.EntityConfiguration;
+using CPRentManagement.Repository.IdentityModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace CPRentManagement.Repository
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<Company> Companies { get; set; }
         public DbSet<Property> Properties { get; set; }
@@ -21,6 +23,8 @@ namespace CPRentManagement.Repository
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CompanyEntityTypeConfiguration).Assembly);
         }
     }
