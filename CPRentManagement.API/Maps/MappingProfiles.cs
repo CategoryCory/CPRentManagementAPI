@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CPRentManagement.API.Dtos;
 using CPRentManagement.Domain.Models;
+using CPRentManagement.Repository.IdentityModels;
 
 namespace CPRentManagement.API.Maps
 {
@@ -9,6 +10,7 @@ namespace CPRentManagement.API.Maps
         public MappingProfiles()
         {
             CreateMap<Company, CompanyDto>().ReverseMap();
+            //CreateMap<ApplicationUser, UserDto>().ReverseMap();
         }
     }
 }
