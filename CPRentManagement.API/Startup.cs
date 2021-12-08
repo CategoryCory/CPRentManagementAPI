@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 namespace CPRentManagement.API
 {
@@ -27,16 +28,26 @@ namespace CPRentManagement.API
             services.ConfigureCors();
             services.ConfigureIISIntegration();
             services.ConfigureApplicationDatabase(_config);
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CPRentManagement.API", Version = "v1" });
-            });
+            services.ConfigureIdentity(_config);
 
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
 
             services.AddScoped<ICompanyService, CompanyService>();
+
+            services.AddControllers();
+
+            //services.AddControllers().AddJsonOptions(options =>
+            //{
+            //    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+            //});
+            //services.AddControllers().AddNewtonsoftJson(x => 
+            //    x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //    );
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CPRentManagement.API", Version = "v1" });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

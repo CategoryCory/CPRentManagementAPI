@@ -1,6 +1,7 @@
 ﻿using CPRentManagement.Repository.IdentityModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
@@ -24,11 +25,29 @@ namespace CPRentManagement.API.Services
 
         public async Task<string> CreateToken(ApplicationUser user)
         {
+            var claims = await GetClaims(user);
+
+            var credentials = GetSigningCredentials();
+
+            var tokenOptions = new JwtSecurityToken(
+                issuer: "https://localhost:5001",
+                audience: "https://localhost:5001",
+                claims: claims,
+                expires: DateTime.UtcNow.AddDays(7),
+                signingCredentials: credentials
+            );
+
+            var token = new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+
+            return token;
+        }
+
+        private async Task<List<Claim>> GetClaims(ApplicationUser user)
+        {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim(ClaimTypes.NameIdentifier, user.Id),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Email, user.Email),
             };
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -38,20 +57,15 @@ namespace CPRentManagement.API.Services
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetValue<string>("TokenKey")));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            return claims;
+        }
 
-            var descriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(7),
-                SigningCredentials = credentials
-            };
+        private SigningCredentials GetSigningCredentials()
+        {
+            var tokenKey = Encoding.UTF8.GetBytes(_config.GetValue<string>("JwtSettings:SecurityKey"));
+            var securityKey = new SymmetricSecurityKey(tokenKey);
 
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(descriptor);
-
-            return tokenHandler.WriteToken(token);
+            return new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha512Signature);
         }
     }
 }

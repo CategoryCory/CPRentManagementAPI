@@ -10,7 +10,9 @@ namespace CPRentManagement.API.Maps
         public MappingProfiles()
         {
             CreateMap<Company, CompanyDto>().ReverseMap();
-            //CreateMap<ApplicationUser, UserDto>().ReverseMap();
+            CreateMap<UserRegistrationDto, ApplicationUser>()
+                .ForMember(u => u.UserName, options => options.MapFrom(x => x.Email))
+                .ReverseMap();
         }
     }
 }
