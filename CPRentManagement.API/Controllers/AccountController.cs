@@ -6,14 +6,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace CPRentManagement.API.Controllers
 {
     [Route("api/[controller]")]
-    [AllowAnonymous]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -34,6 +32,7 @@ namespace CPRentManagement.API.Controllers
         }
 
         [HttpPost("login")]
+        [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
@@ -69,6 +68,8 @@ namespace CPRentManagement.API.Controllers
                 var errors = result.Errors.Select(e => e.Description);
                 return BadRequest();
             }
+
+            await _userManager.AddToRoleAsync(user, userRegistrationDto.UserRole);
 
             return StatusCode(StatusCodes.Status201Created);
         }
