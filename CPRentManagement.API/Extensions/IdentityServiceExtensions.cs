@@ -15,7 +15,10 @@ namespace CPRentManagement.API.Extensions
     {
         public static void ConfigureIdentity(this IServiceCollection services, IConfiguration config)
         {
-            services.AddIdentityCore<ApplicationUser>()
+            services.AddIdentityCore<ApplicationUser>(options =>
+                {
+                    options.User.RequireUniqueEmail = true;
+                })
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddSignInManager<SignInManager<ApplicationUser>>();
