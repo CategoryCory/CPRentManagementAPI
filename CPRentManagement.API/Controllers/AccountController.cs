@@ -34,6 +34,7 @@ namespace CPRentManagement.API.Controllers
         [HttpPost("login")]
         [AllowAnonymous]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Login([FromBody] UserLoginDto userLoginDto)
         {
@@ -66,7 +67,7 @@ namespace CPRentManagement.API.Controllers
             if (!result.Succeeded)
             {
                 var errors = result.Errors.Select(e => e.Description);
-                return BadRequest();
+                return BadRequest(errors);
             }
 
             await _userManager.AddToRoleAsync(user, userRegistrationDto.UserRole);
